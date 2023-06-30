@@ -13,6 +13,12 @@ class TutorController {
           .status(400)
           .json(DuplicateKeyError(Object.keys(error.errors)));
       }
+      if (!(error.statusCode === undefined)) {
+        return res.status(error.statusCode).json({
+          message: error.name,
+          details: error.message,
+        });
+      }
       return res.status(500).json(error);
     }
   }
@@ -23,10 +29,13 @@ class TutorController {
 
       return res.status(200).json(result);
     } catch (error) {
-      return res.status(error.statusCode).json({
-        message: error.name,
-        details: error.message,
-      });
+      if (!(error.statusCode === undefined)) {
+        return res.status(error.statusCode).json({
+          message: error.name,
+          details: error.message,
+        });
+      }
+      return res.status(500).json(error);
     }
   }
 
@@ -41,10 +50,13 @@ class TutorController {
           .status(400)
           .json(DuplicateKeyError(Object.keys(error.errors)));
       }
-      return res.status(error.statusCode).json({
-        message: error.name,
-        details: error.message,
-      });
+      if (!(error.statusCode === undefined)) {
+        return res.status(error.statusCode).json({
+          message: error.name,
+          details: error.message,
+        });
+      }
+      return res.status(500).json(error);
     }
   }
 
@@ -54,10 +66,13 @@ class TutorController {
       await TutorService.delete(id);
       return res.status(204).json();
     } catch (error) {
-      return res.status(error.statusCode).json({
-        message: error.name,
-        details: error.message,
-      });
+      if (!(error.statusCode === undefined)) {
+        return res.status(error.statusCode).json({
+          message: error.name,
+          details: error.message,
+        });
+      }
+      return res.status(500).json(error);
     }
   }
 }
