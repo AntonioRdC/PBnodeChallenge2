@@ -51,5 +51,3 @@ class TutorService {
 }
 
 export default new TutorService();
-
-//  await bcrypt.compare(payload.password, hash);
