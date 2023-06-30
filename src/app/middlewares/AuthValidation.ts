@@ -8,7 +8,7 @@ export default (req: Request, res: Response, next: NextFunction): void => {
       password: Joi.string().required(),
     });
 
-    const { error } = schema.validate(req.query, {
+    const { error } = schema.validate(req.body, {
       abortEarly: false,
     });
 

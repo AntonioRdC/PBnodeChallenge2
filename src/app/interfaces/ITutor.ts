@@ -17,5 +17,9 @@ export interface ITutorResponse {
   email: string;
   date_of_birth: string;
   zip_code: number;
-  __v?: number;
+}
+
+export interface ITutorPasswordResponse {
+  _id: Types.ObjectId;
+  password: string;
 }
