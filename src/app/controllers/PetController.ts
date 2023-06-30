@@ -5,7 +5,9 @@ import DuplicateKeyError from '../errors/DuplicateKeyError';
 class PetController {
   async create(req: Request, res: Response): Promise<Response> {
     try {
-      const result = await PetService.create(req.body);
+      const { tutorId } = req.params;
+      const result = await PetService.create(tutorId, req.body);
+
       return res.status(201).json(result);
     } catch (error) {
       if (error.name === 'ValidationError') {

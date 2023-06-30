@@ -1,4 +1,5 @@
 import type { Types } from 'mongoose';
+import type { IPet } from './IPet';
 
 export interface ITutor {
   name: string;
@@ -17,9 +18,23 @@ export interface ITutorResponse {
   email: string;
   date_of_birth: string;
   zip_code: number;
+  pets?: IPet[];
 }
 
 export interface ITutorPasswordResponse {
   _id: Types.ObjectId;
   password: string;
+}
+
+export interface ITutorPaginate {
+  docs: ITutorResponse[];
+  totalDocs: number;
+  limit: number;
+  totalPages: number;
+  page?: number | undefined;
+  pagingCounter: number;
+  hasPrevPage: boolean;
+  hasNextPage: boolean;
+  prevPage?: number | null | undefined;
+  nextPage?: number | null | undefined;
 }

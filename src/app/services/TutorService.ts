@@ -1,8 +1,12 @@
-import type { PaginateResult } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
-import type { ITutor, ITutorResponse } from '../interfaces/ITutor';
+import type {
+  ITutor,
+  ITutorResponse,
+  ITutorPaginate,
+} from '../interfaces/ITutor';
 import TutorRepository from '../repositories/TutorRepository';
+import PetRepository from '../repositories/PetRepository';
 import NotFoundError from '../errors/NotFoundError';
 
 class TutorService {
@@ -17,7 +21,7 @@ class TutorService {
     return result;
   }
 
-  async get(payload): Promise<PaginateResult<ITutorResponse>> {
+  async get(payload): Promise<ITutorPaginate> {
     const { page, limit } = payload;
     let validatePage: number;
     let validateLimit: number;
@@ -27,14 +31,33 @@ class TutorService {
     } else {
       validatePage = 1;
     }
-
     if (typeof limit === 'string') {
       validateLimit = Number(limit);
     } else {
       validateLimit = 10;
     }
 
-    return await TutorRepository.get(validatePage, validateLimit);
+    const tutors: ITutorPaginate = await TutorRepository.get(
+      validatePage,
+      validateLimit
+    );
+    const pets = await PetRepository.get();
+
+    const modifiedTutors = JSON.parse(JSON.stringify(tutors));
+    for (const pet of pets) {
+      const tutor = modifiedTutors.docs.findIndex(
+        (tutor) => tutor._id.toString() === pet.tutor_id.toString()
+      );
+
+      if (tutor !== -1) {
+        if (modifiedTutors.docs[tutor]?.pets === undefined) {
+          modifiedTutors.docs[tutor].pets = [];
+        }
+        modifiedTutors.docs[tutor].pets?.push(pet);
+      }
+    }
+
+    return modifiedTutors;
   }
 
   async put(id: string, payload: ITutor): Promise<ITutorResponse> {
