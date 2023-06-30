@@ -10,10 +10,6 @@ const schema = new Schema<IPet>(
     carry: { type: String, required: true },
     weight: { type: Number, required: true },
     date_of_birth: { type: String, required: true },
-    tutor_id: {
-      type: Schema.Types.ObjectId,
-      ref: 'Employee',
-    },
   },
   { versionKey: false }
 );

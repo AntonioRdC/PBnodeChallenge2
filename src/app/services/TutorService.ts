@@ -6,7 +6,6 @@ import type {
   ITutorPaginate,
 } from '../interfaces/ITutor';
 import TutorRepository from '../repositories/TutorRepository';
-import PetRepository from '../repositories/PetRepository';
 import NotFoundError from '../errors/NotFoundError';
 
 class TutorService {
@@ -37,27 +36,9 @@ class TutorService {
       validateLimit = 10;
     }
 
-    const tutors: ITutorPaginate = await TutorRepository.get(
-      validatePage,
-      validateLimit
-    );
-    const pets = await PetRepository.get();
+    const tutors = await TutorRepository.get(validatePage, validateLimit);
 
-    const modifiedTutors = JSON.parse(JSON.stringify(tutors));
-    for (const pet of pets) {
-      const tutor = modifiedTutors.docs.findIndex(
-        (tutor) => tutor._id.toString() === pet.tutor_id.toString()
-      );
-
-      if (tutor !== -1) {
-        if (modifiedTutors.docs[tutor]?.pets === undefined) {
-          modifiedTutors.docs[tutor].pets = [];
-        }
-        modifiedTutors.docs[tutor].pets?.push(pet);
-      }
-    }
-
-    return modifiedTutors;
+    return tutors;
   }
 
   async put(id: string, payload: ITutor): Promise<ITutorResponse> {

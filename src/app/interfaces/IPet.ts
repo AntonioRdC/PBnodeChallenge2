@@ -6,7 +6,6 @@ export interface IPet {
   carry: string;
   weight: number;
   date_of_birth: string;
-  tutor_id: Types.ObjectId;
 }
 
 export interface IPetResponse {
@@ -16,5 +15,4 @@ export interface IPetResponse {
   carry: string;
   weight: number;
   date_of_birth: string;
-  tutor_id: Types.ObjectId;
 }

@@ -1,5 +1,4 @@
 import type { Types } from 'mongoose';
-import type { IPet } from './IPet';
 
 export interface ITutor {
   name: string;
@@ -8,6 +7,7 @@ export interface ITutor {
   email: string;
   date_of_birth: string;
   zip_code: number;
+  pets?: Types.ObjectId[];
 }
 
 export interface ITutorResponse {
@@ -18,7 +18,7 @@ export interface ITutorResponse {
   email: string;
   date_of_birth: string;
   zip_code: number;
-  pets?: IPet[];
+  pets?: Types.ObjectId[];
 }
 
 export interface ITutorPasswordResponse {
