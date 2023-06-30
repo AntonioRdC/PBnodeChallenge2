@@ -1,0 +1,337 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Compass Tutor MicroService",
+    "description": "A client hired Compass to build a new microservice for its veterinary franchise. This microservice will be used by all the clinics they own for internal client and attendances management. So, you have this new mission, to build the POC foundations of this brand new microservice, so the sales and management team can have the primary technical view of the needs that the client has.",
+    "contact": {
+      "name": "Antônio Ribeiro de Carvalho",
+      "email": "antonioribeiroamg@gmail.com",
+      "url": "https://github.com/AntonioRdC/PBnodeChallenge1"
+    },
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "Tutor"
+    },
+    {
+      "name": "Pet"
+    }
+  ],
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "paths": {
+    "/tutor": {
+      "post": {
+        "tags": [
+          "Tutor"
+        ],
+        "summary": "Creat Tutor",
+        "description": "Creat one tutor and return the tutor created",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Tutor"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/Created"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/tutors": {
+      "get": {
+        "tags": [
+          "Tutor"
+        ],
+        "summary": "Get All Tutors",
+        "description": "Get all tutor",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/tutor/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "put": {
+        "tags": [
+          "Tutor"
+        ],
+        "summary": "Update all attributes of a tutor",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Tutor"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Tutor"
+        ],
+        "summary": "Remove one tutor",
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/NoContent"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/pet/{tutorId}": {
+      "parameters": [
+        {
+          "name": "tutorId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "tags": [
+          "Pet"
+        ],
+        "summary": "Creat Pet",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Pet"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/Created"
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidateError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/pet/{petId}/tutor/{tutorId}": {
+      "parameters": [
+        {
+          "name": "petId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "tutorId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "put": {
+        "tags": [
+          "Pet"
+        ],
+        "summary": "Update all attributes of a pet",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Pet"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Pet"
+        ],
+        "summary": "Remove one tutor",
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/NoContent"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Tutor": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Jonas"
+          },
+          "phone": {
+            "type": "string",
+            "example": 69981312317
+          },
+          "email": {
+            "type": "string",
+            "example": "antonio@email.com"
+          },
+          "date_of_birth": {
+            "type": "string",
+            "example": "1993-12-12 10:10"
+          },
+          "zip_code": {
+            "type": "number",
+            "example": 61760000
+          }
+        }
+      },
+      "Pet": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Espartano"
+          },
+          "species": {
+            "type": "string",
+            "example": "dog"
+          },
+          "carry": {
+            "type": "string",
+            "example": "p"
+          },
+          "weight": {
+            "type": "string",
+            "example": 5
+          },
+          "date_of_birth": {
+            "type": "string",
+            "example": "1993-12-12 10:10"
+          }
+        }
+      }
+    },
+    "responses": {
+      "Success": {
+        "description": "200. Success"
+      },
+      "Created": {
+        "description": "201. Created"
+      },
+      "NoContent": {
+        "description": "204. No Content"
+      },
+      "BadRequest": {
+        "description": "400. Bad Request"
+      },
+      "ValidateError": {
+        "description": "400. Validate Error"
+      },
+      "NotFound": {
+        "description": "404. Not Found"
+      },
+      "InternalServerError": {
+        "description": "500. Internal Server Error"
+      }
+    }
+  }
+}
