@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Router } from 'express';
-import PetController from '../app/controller/PetController';
+import PetController from '../app/controllers/PetController';
 import petCreateAndPutValidation from '../app/middlewares/PetCreateAndPutValidate';
 import AuthVerify from '../app/middlewares/AuthVerify';
 
