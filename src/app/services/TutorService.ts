@@ -15,7 +15,9 @@ class TutorService {
     payload.password = hash;
 
     const result = await TutorRepository.create(payload);
+
     result.password = undefined;
+    result.pets = undefined;
 
     return result;
   }

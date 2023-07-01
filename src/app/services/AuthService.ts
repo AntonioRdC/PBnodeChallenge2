@@ -19,7 +19,7 @@ class AuthService {
       { id: tutor._id, email: payload.email },
       authConfig.secret,
       {
-        expiresIn: '1h',
+        expiresIn: authConfig.expiresIn,
       }
     );
 

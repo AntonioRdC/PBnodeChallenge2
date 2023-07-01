@@ -1,4 +1,4 @@
-import type { PaginateResult, Document } from 'mongoose';
+import type { PaginateResult, Document, UpdateWriteOpResult } from 'mongoose';
 
 import type {
   ITutor,
@@ -36,7 +36,11 @@ class TutorRepository {
     return await TutorSchema.findByIdAndUpdate(id, payload, {
       returnDocument: 'after',
       runValidators: true,
-    }).select('-password _id');
+    }).select('-password -_id -pets');
+  }
+
+  async updateOne(query: object): Promise<UpdateWriteOpResult> {
+    return await TutorSchema.updateOne(query);
   }
 
   async delete(id: string): Promise<ITutorResponse | null> {
@@ -46,9 +50,7 @@ class TutorRepository {
   async getByEmailToAuth(
     email: string
   ): Promise<ITutorPasswordResponse | null> {
-    return await TutorSchema.findOne({ email }).select(
-      '+password email password'
-    );
+    return await TutorSchema.findOne({ email }).select('password');
   }
 }
 

@@ -27,8 +27,8 @@ class PetController {
 
   async put(req: Request, res: Response): Promise<Response> {
     try {
-      const { id } = req.params;
-      const result = await PetService.put(id, req.body);
+      const { petId, tutorId } = req.params;
+      const result = await PetService.put(petId, tutorId, req.body);
       return res.status(200).json(result);
     } catch (error) {
       if (error.name === 'ValidationError') {
@@ -48,8 +48,8 @@ class PetController {
 
   async delete(req: Request, res: Response): Promise<Response> {
     try {
-      const { id } = req.params;
-      await PetService.delete(id);
+      const { petId, tutorId } = req.params;
+      await PetService.delete(petId, tutorId);
       return res.status(204).json();
     } catch (error) {
       if (!(error.statusCode === undefined)) {
