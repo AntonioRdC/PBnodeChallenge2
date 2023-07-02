@@ -1,4 +1,4 @@
-import type { PaginateResult, Document, UpdateWriteOpResult } from 'mongoose';
+import type { PaginateResult, UpdateWriteOpResult } from 'mongoose';
 
 import type {
   ITutor,
@@ -8,7 +8,7 @@ import type {
 import TutorSchema from '../schemas/TutorSchema';
 
 class TutorRepository {
-  async create(payload: ITutor): Promise<ITutorResponse> {
+  async post(payload: ITutor): Promise<ITutorResponse> {
     return await TutorSchema.create(payload);
   }
 
@@ -28,10 +28,6 @@ class TutorRepository {
     return result;
   }
 
-  async getById(id: string): Promise<Document<ITutorResponse> | null> {
-    return await TutorSchema.findById(id);
-  }
-
   async update(id: string, payload: ITutor): Promise<ITutorResponse | null> {
     return await TutorSchema.findByIdAndUpdate(id, payload, {
       returnDocument: 'after',
@@ -39,12 +35,16 @@ class TutorRepository {
     }).select('-password -_id -pets');
   }
 
+  async delete(id: string): Promise<ITutorResponse | null> {
+    return await TutorSchema.findByIdAndDelete(id);
+  }
+
   async updateOne(query: object): Promise<UpdateWriteOpResult> {
     return await TutorSchema.updateOne(query);
   }
 
-  async delete(id: string): Promise<ITutorResponse | null> {
-    return await TutorSchema.findByIdAndDelete(id);
+  async getById(id: string): Promise<ITutorResponse | null> {
+    return await TutorSchema.findById(id);
   }
 
   async getByEmailToAuth(

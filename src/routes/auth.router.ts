@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Router } from 'express';
 import AuthController from '../app/controllers/AuthController';
-import AuthValidation from '../app/middlewares/AuthValidation';
+import AuthValidation from '../app/middlewares/validations/AuthValidation';
 
 const router = Router();
 

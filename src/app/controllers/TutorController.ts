@@ -3,9 +3,9 @@ import TutorService from '../services/TutorService';
 import DuplicateKeyError from '../errors/DuplicateKeyError';
 
 class TutorController {
-  async create(req: Request, res: Response): Promise<Response> {
+  async post(req: Request, res: Response): Promise<Response> {
     try {
-      const result = await TutorService.create(req.body);
+      const result = await TutorService.post(req.body);
       return res.status(201).json(result);
     } catch (error) {
       if (error.name === 'ValidationError') {
@@ -39,10 +39,10 @@ class TutorController {
     }
   }
 
-  async put(req: Request, res: Response): Promise<Response> {
+  async update(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params;
-      const result = await TutorService.put(id, req.body);
+      const result = await TutorService.update(id, req.body);
       return res.status(200).json(result);
     } catch (error) {
       if (error.name === 'ValidationError') {

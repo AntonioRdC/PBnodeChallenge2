@@ -21,7 +21,6 @@ class App {
 
   private middlewares(): void {
     this.server.use(express.json({}));
-    this.server.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
     this.server.use(
       express.urlencoded({
         extended: true,
@@ -32,6 +31,7 @@ class App {
 
   private routes(): void {
     this.server.use(...routes);
+    this.server.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
   }
 }
 

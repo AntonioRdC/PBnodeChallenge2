@@ -11,7 +11,7 @@ export interface ITutor {
 }
 
 export interface ITutorResponse {
-  _id: Types.ObjectId;
+  _id?: Types.ObjectId;
   name: string;
   password?: string;
   phone: string;

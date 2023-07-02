@@ -7,14 +7,15 @@ import type {
 } from '../interfaces/ITutor';
 import TutorRepository from '../repositories/TutorRepository';
 import NotFoundError from '../errors/NotFoundError';
+import UnauthorizedError from '../errors/UnauthorizedError';
 
 class TutorService {
-  async create(payload: ITutor): Promise<ITutorResponse> {
+  async post(payload: ITutor): Promise<ITutorResponse> {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(payload.password, salt);
     payload.password = hash;
 
-    const result = await TutorRepository.create(payload);
+    const result = await TutorRepository.post(payload);
 
     result.password = undefined;
     result.pets = undefined;
@@ -43,7 +44,7 @@ class TutorService {
     return tutors;
   }
 
-  async put(id: string, payload: ITutor): Promise<ITutorResponse> {
+  async update(id: string, payload: ITutor): Promise<ITutorResponse> {
     const result = await TutorRepository.update(id, payload);
     if (result === null) throw new NotFoundError('Not found Tutor');
 
@@ -51,6 +52,10 @@ class TutorService {
   }
 
   async delete(id: string): Promise<void> {
+    const verifyPets = await TutorRepository.getById(id);
+    if (verifyPets?.pets?.length !== 0)
+      throw new UnauthorizedError('Tutors have Pets associates');
+
     const result = await TutorRepository.delete(id);
     if (result === null) throw new NotFoundError('Not found Tutor');
   }
