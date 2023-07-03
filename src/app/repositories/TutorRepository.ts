@@ -39,12 +39,16 @@ class TutorRepository {
     return await TutorSchema.findByIdAndDelete(id, query);
   }
 
-  async updateById(id: string, query: object): Promise<ITutorResponse | null> {
+  async updatePet(id: string, query: object): Promise<ITutorResponse | null> {
     return await TutorSchema.findByIdAndUpdate(id, query);
   }
 
   async getById(id: string): Promise<ITutorResponse | null> {
     return await TutorSchema.findById(id);
+  }
+
+  async getPet(query: object): Promise<ITutorResponse | null> {
+    return await TutorSchema.findOne(query);
   }
 
   async getByEmailToAuth(

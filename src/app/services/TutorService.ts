@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-
+import { isValidObjectId } from 'mongoose';
 import type {
   ITutor,
   ITutorResponse,
@@ -23,7 +23,7 @@ class TutorService {
     return result;
   }
 
-  async get(payload): Promise<ITutorPaginate> {
+  async get(payload: any): Promise<ITutorPaginate> {
     const { page, limit } = payload;
     let validatePage: number;
     let validateLimit: number;
@@ -44,20 +44,23 @@ class TutorService {
     return tutors;
   }
 
-  async update(id: string, payload: ITutor): Promise<ITutorResponse> {
-    const result = await TutorRepository.update(id, payload);
+  async update(tutorId: string, payload: ITutor): Promise<ITutorResponse> {
+    if (!isValidObjectId(tutorId)) throw new NotFoundError('Id not valid');
+
+    const result = await TutorRepository.update(tutorId, payload);
     if (result === null) throw new NotFoundError('Not found Tutor');
 
     return result;
   }
 
-  async delete(id: string): Promise<void> {
-    const verifyPets = await TutorRepository.getById(id);
-    console.log(verifyPets);
+  async delete(tutorId: string): Promise<void> {
+    if (!isValidObjectId(tutorId)) throw new NotFoundError('Id not valid');
+
+    const verifyPets = await TutorRepository.getById(tutorId);
     if (verifyPets?.pets?.length !== 0)
       throw new UnauthorizedError('Tutors have Pets associates');
 
-    const result = await TutorRepository.delete(id);
+    const result = await TutorRepository.delete(tutorId);
     if (result === null) throw new NotFoundError('Not found Tutor');
   }
 }

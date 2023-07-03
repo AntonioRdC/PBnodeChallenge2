@@ -2,16 +2,19 @@ import type { IPet, IPetResponse } from '../interfaces/IPet';
 import TutorRepository from '../repositories/TutorRepository';
 import PetRepository from '../repositories/PetRepository';
 import NotFoundError from '../errors/NotFoundError';
+import { isValidObjectId } from 'mongoose';
 
 class PetService {
   async create(tutorId: string, payload: IPet): Promise<IPetResponse> {
+    if (!isValidObjectId(tutorId)) throw new NotFoundError('Id not valid');
+
     const tutor = await TutorRepository.getById(tutorId);
     if (tutor === null) throw new NotFoundError('Not found Tutor');
 
-    const result = await PetRepository.create(tutorId, payload);
+    const result = await PetRepository.create(payload);
 
     const query = { $push: { pets: [result._id] } };
-    await TutorRepository.updateById(tutorId, query);
+    await TutorRepository.updatePet(tutorId, query);
 
     return result;
   }
@@ -21,7 +24,10 @@ class PetService {
     tutorId: string,
     payload: IPet
   ): Promise<IPetResponse> {
-    const tutor = await TutorRepository.getById(tutorId);
+    if (!isValidObjectId(tutorId) || !isValidObjectId(petId))
+      throw new NotFoundError('Id not valid');
+    const query = { _id: tutorId, pets: petId };
+    const tutor = await TutorRepository.getPet(query);
     if (tutor === null) throw new NotFoundError('Not found Tutor');
 
     const result = await PetRepository.update(petId, payload);
@@ -31,8 +37,10 @@ class PetService {
   }
 
   async delete(petId: string, tutorId: string): Promise<void> {
+    if (!isValidObjectId(tutorId) || !isValidObjectId(petId))
+      throw new NotFoundError('Id not valid');
     const query = { $pull: { pets: petId } };
-    const tutor = await TutorRepository.updateById(tutorId, query);
+    const tutor = await TutorRepository.updatePet(tutorId, query);
     if (tutor === null) throw new NotFoundError('Not found Tutor');
 
     const result = await PetRepository.delete(petId);

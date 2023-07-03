@@ -2,7 +2,7 @@ import type { IPet, IPetResponse } from '../interfaces/IPet';
 import PetSchema from '../schemas/PetSchema';
 
 class PetRepository {
-  async create(tutorId: string, payload: IPet): Promise<IPetResponse> {
+  async create(payload: IPet): Promise<IPetResponse> {
     return await PetSchema.create(payload);
   }
 
