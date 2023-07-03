@@ -4,7 +4,7 @@
 
 # Compass Tutor MicroService
 
-Final Challenge of the **NodeJS Scholl Program from [Compass.uol](https://compass.uol/)**.
+Challenge of the **NodeJS Scholl Program from [Compass.uol](https://compass.uol/)**.
 
 ## Summary
 
@@ -37,7 +37,14 @@ $ cd PBnodeChallenge2
 $ npm install
 ```
 
-<span style="font-size: 26px;">Don't forget to create a .env file based on the .env.example file</span><br/>
+Create a .env file based on the .env.example file.
+
+`MONGO_DB_URL`
+`PORT`
+`TARGET`
+`JWT_SECRET`
+`JWT_SECRET_EXPIRES`
+
 Now that you already have the dependencies installed, just start the project.
 
 ```bash
