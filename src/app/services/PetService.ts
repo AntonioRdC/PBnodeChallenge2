@@ -11,7 +11,7 @@ class PetService {
     const result = await PetRepository.create(tutorId, payload);
 
     const query = { $push: { pets: [result._id] } };
-    await TutorRepository.updateOne(query);
+    await TutorRepository.updateById(tutorId, query);
 
     return result;
   }
@@ -31,7 +31,8 @@ class PetService {
   }
 
   async delete(petId: string, tutorId: string): Promise<void> {
-    const tutor = await TutorRepository.getById(tutorId);
+    const query = { $pull: { pets: petId } };
+    const tutor = await TutorRepository.updateById(tutorId, query);
     if (tutor === null) throw new NotFoundError('Not found Tutor');
 
     const result = await PetRepository.delete(petId);

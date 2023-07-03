@@ -53,6 +53,7 @@ class TutorService {
 
   async delete(id: string): Promise<void> {
     const verifyPets = await TutorRepository.getById(id);
+    console.log(verifyPets);
     if (verifyPets?.pets?.length !== 0)
       throw new UnauthorizedError('Tutors have Pets associates');
 

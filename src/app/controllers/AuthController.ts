@@ -7,7 +7,7 @@ class AuthController {
       const result = await AuthService.create(req.body);
       return res.status(201).json(result);
     } catch (error) {
-      if (!(error.statusCode === undefined)) {
+      if (error.statusCode !== undefined) {
         return res.status(error.statusCode).json({
           message: error.name,
           details: error.message,

@@ -15,7 +15,7 @@ class PetController {
           .status(400)
           .json(DuplicateKeyError(Object.keys(error.errors)));
       }
-      if (!(error.statusCode === undefined)) {
+      if (error.statusCode !== undefined) {
         return res.status(error.statusCode).json({
           message: error.name,
           details: error.message,
@@ -36,7 +36,7 @@ class PetController {
           .status(400)
           .json(DuplicateKeyError(Object.keys(error.errors)));
       }
-      if (!(error.statusCode === undefined)) {
+      if (error.statusCode !== undefined) {
         return res.status(error.statusCode).json({
           message: error.name,
           details: error.message,
@@ -52,7 +52,7 @@ class PetController {
       await PetService.delete(petId, tutorId);
       return res.status(204).json();
     } catch (error) {
-      if (!(error.statusCode === undefined)) {
+      if (error.statusCode !== undefined) {
         return res.status(error.statusCode).json({
           message: error.name,
           details: error.message,
