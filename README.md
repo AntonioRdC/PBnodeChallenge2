@@ -37,7 +37,7 @@ $ cd PBnodeChallenge2
 $ npm install
 ```
 
-<span style="font-size: 20px;">Don't forget to create a .env file based on the .env.example file</span>
+<span style="font-size: 26px;">Don't forget to create a .env file based on the .env.example file</span><br/>
 Now that you already have the dependencies installed, just start the project.
 
 ```bash
