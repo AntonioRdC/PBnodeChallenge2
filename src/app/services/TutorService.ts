@@ -56,12 +56,12 @@ class TutorService {
   async delete(tutorId: string): Promise<void> {
     if (!isValidObjectId(tutorId)) throw new NotFoundError('Id not valid');
 
-    const verifyPets = await TutorRepository.getById(tutorId);
-    if (verifyPets?.pets?.length !== 0)
+    const result = await TutorRepository.getById(tutorId);
+    if (result === null) throw new NotFoundError('Not found Tutor');
+    if (result.pets?.length !== 0)
       throw new UnauthorizedError('Tutors have Pets associates');
 
-    const result = await TutorRepository.delete(tutorId);
-    if (result === null) throw new NotFoundError('Not found Tutor');
+    await TutorRepository.delete(tutorId);
   }
 }
 

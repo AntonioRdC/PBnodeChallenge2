@@ -41,8 +41,8 @@ class TutorController {
 
   async update(req: Request, res: Response): Promise<Response> {
     try {
-      const { id } = req.params;
-      const result = await TutorService.update(id, req.body);
+      const { tutorId } = req.params;
+      const result = await TutorService.update(tutorId, req.body);
       return res.status(200).json(result);
     } catch (error) {
       if (error.name === 'ValidationError') {
@@ -62,8 +62,8 @@ class TutorController {
 
   async delete(req: Request, res: Response): Promise<Response> {
     try {
-      const { id } = req.params;
-      await TutorService.delete(id);
+      const { tutorId } = req.params;
+      await TutorService.delete(tutorId);
       return res.status(204).json();
     } catch (error) {
       if (!(error.statusCode === undefined)) {

@@ -28,23 +28,32 @@ class TutorRepository {
     return result;
   }
 
-  async update(id: string, payload: ITutor): Promise<ITutorResponse | null> {
-    return await TutorSchema.findByIdAndUpdate(id, payload, {
+  async update(
+    tutorId: string,
+    payload: ITutor
+  ): Promise<ITutorResponse | null> {
+    return await TutorSchema.findByIdAndUpdate(tutorId, payload, {
       returnDocument: 'after',
       runValidators: true,
     }).select('-password -_id -pets');
   }
 
-  async delete(id: string, query?: object): Promise<ITutorResponse | null> {
-    return await TutorSchema.findByIdAndDelete(id, query);
+  async delete(
+    tutorId: string,
+    query?: object
+  ): Promise<ITutorResponse | null> {
+    return await TutorSchema.findByIdAndDelete(tutorId, query);
   }
 
-  async updatePet(id: string, query: object): Promise<ITutorResponse | null> {
-    return await TutorSchema.findByIdAndUpdate(id, query);
+  async updatePet(
+    tutorId: string,
+    query: object
+  ): Promise<ITutorResponse | null> {
+    return await TutorSchema.findByIdAndUpdate(tutorId, query);
   }
 
-  async getById(id: string): Promise<ITutorResponse | null> {
-    return await TutorSchema.findById(id);
+  async getById(tutorId: string): Promise<ITutorResponse | null> {
+    return await TutorSchema.findById(tutorId);
   }
 
   async getPet(query: object): Promise<ITutorResponse | null> {
