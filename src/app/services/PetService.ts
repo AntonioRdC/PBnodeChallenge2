@@ -28,7 +28,8 @@ class PetService {
       throw new NotFoundError('Id not valid');
     const query = { _id: tutorId, pets: petId };
     const tutor = await TutorRepository.getPet(query);
-    if (tutor === null) throw new NotFoundError('Not found Tutor');
+    if (tutor === null)
+      throw new NotFoundError('Not found Tutor or Pet not Exist in Tutor');
 
     const result = await PetRepository.update(petId, payload);
     if (result === null) throw new NotFoundError('Not found Pet');
