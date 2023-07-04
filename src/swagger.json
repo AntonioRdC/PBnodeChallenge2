@@ -4,11 +4,11 @@
     "title": "Compass Tutor MicroService",
     "description": "A client hired Compass to build a new microservice for its veterinary franchise. This microservice will be used by all the clinics they own for internal client and attendances management. So, you have this new mission, to build the POC foundations of this brand new microservice, so the sales and management team can have the primary technical view of the needs that the client has.",
     "contact": {
-      "name": "Antônio Ribeiro de Carvalho",
+      "name": "Antônio Ribeiro",
       "email": "antonioribeiroamg@gmail.com",
-      "url": "https://github.com/AntonioRdC/PBnodeChallenge1"
+      "url": "https://github.com/AntonioRdC/PBnodeChallenge2"
     },
-    "version": "1.0.0"
+    "version": "2.0.0"
   },
   "tags": [
     {
@@ -20,10 +20,42 @@
   ],
   "servers": [
     {
-      "url": "http://localhost:3000"
+      "url": "http://localhost:5000"
     }
   ],
   "paths": {
+    "/auth": {
+      "post": {
+        "tags": [
+          "Tutor"
+        ],
+        "summary": "Creat Token with Tutor",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthPost"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/Created"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
     "/tutor": {
       "post": {
         "tags": [
@@ -35,7 +67,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Tutor"
+                "$ref": "#/components/schemas/TutorPost"
               }
             }
           },
@@ -46,7 +78,7 @@
             "$ref": "#/components/responses/Created"
           },
           "400": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "#/components/responses/BadRequestError"
           },
           "500": {
             "$ref": "#/components/responses/InternalServerError"
@@ -55,6 +87,26 @@
       }
     },
     "/tutors": {
+      "parameters": [
+        {
+          "name": "page",
+          "in": "query",
+          "required": false,
+          "schema": {
+            "type": "number",
+            "example": 1
+          }
+        },
+        {
+          "name": "limit",
+          "in": "query",
+          "required": false,
+          "schema": {
+            "type": "number",
+            "example": 50
+          }
+        }
+      ],
       "get": {
         "tags": [
           "Tutor"
@@ -66,21 +118,29 @@
             "$ref": "#/components/responses/Success"
           },
           "400": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
           },
           "404": {
-            "$ref": "#/components/responses/NotFound"
+            "$ref": "#/components/responses/NotFoundError"
           },
           "500": {
             "$ref": "#/components/responses/InternalServerError"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
-    "/tutor/{id}": {
+    "/tutor/{tutorId}": {
       "parameters": [
         {
-          "name": "id",
+          "name": "tutorId",
           "in": "path",
           "required": true,
           "schema": {
@@ -97,7 +157,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Tutor"
+                "$ref": "#/components/schemas/TutorPut"
               }
             }
           },
@@ -108,15 +168,23 @@
             "$ref": "#/components/responses/Success"
           },
           "400": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
           },
           "404": {
-            "$ref": "#/components/responses/NotFound"
+            "$ref": "#/components/responses/NotFoundError"
           },
           "500": {
             "$ref": "#/components/responses/InternalServerError"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -128,15 +196,23 @@
             "$ref": "#/components/responses/NoContent"
           },
           "400": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
           },
           "404": {
-            "$ref": "#/components/responses/NotFound"
+            "$ref": "#/components/responses/NotFoundError"
           },
           "500": {
             "$ref": "#/components/responses/InternalServerError"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/pet/{tutorId}": {
@@ -159,7 +235,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Pet"
+                "$ref": "#/components/schemas/PetPostAndPut"
               }
             }
           },
@@ -170,12 +246,20 @@
             "$ref": "#/components/responses/Created"
           },
           "400": {
-            "$ref": "#/components/responses/ValidateError"
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
           },
           "500": {
             "$ref": "#/components/responses/InternalServerError"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/pet/{petId}/tutor/{tutorId}": {
@@ -206,7 +290,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Pet"
+                "$ref": "#/components/schemas/PetPostAndPut"
               }
             }
           },
@@ -217,15 +301,23 @@
             "$ref": "#/components/responses/Success"
           },
           "400": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
           },
           "404": {
-            "$ref": "#/components/responses/NotFound"
+            "$ref": "#/components/responses/NotFoundError"
           },
           "500": {
             "$ref": "#/components/responses/InternalServerError"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -237,27 +329,60 @@
             "$ref": "#/components/responses/NoContent"
           },
           "400": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
           },
           "404": {
-            "$ref": "#/components/responses/NotFound"
+            "$ref": "#/components/responses/NotFoundError"
           },
           "500": {
             "$ref": "#/components/responses/InternalServerError"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     }
   },
   "components": {
     "schemas": {
-      "Tutor": {
+      "TutorPost": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "number",
-            "example": 1
+          "name": {
+            "type": "string",
+            "example": "Jonas"
           },
+          "password": {
+            "type": "string",
+            "example": "abc123"
+          },
+          "phone": {
+            "type": "string",
+            "example": 69981312317
+          },
+          "email": {
+            "type": "string",
+            "example": "antonio@email.com"
+          },
+          "date_of_birth": {
+            "type": "string",
+            "example": "1993-12-12 10:10"
+          },
+          "zip_code": {
+            "type": "number",
+            "example": 61760000
+          }
+        }
+      },
+      "TutorPut": {
+        "type": "object",
+        "properties": {
           "name": {
             "type": "string",
             "example": "Jonas"
@@ -280,13 +405,9 @@
           }
         }
       },
-      "Pet": {
+      "PetPostAndPut": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "example": 1
-          },
           "name": {
             "type": "string",
             "example": "Espartano"
@@ -308,6 +429,19 @@
             "example": "1993-12-12 10:10"
           }
         }
+      },
+      "AuthPost": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "antonio@email.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "abc123"
+          }
+        }
       }
     },
     "responses": {
@@ -320,17 +454,24 @@
       "NoContent": {
         "description": "204. No Content"
       },
-      "BadRequest": {
-        "description": "400. Bad Request"
+      "BadRequestError": {
+        "description": "400. Bad Request Error"
       },
-      "ValidateError": {
-        "description": "400. Validate Error"
+      "UnauthorizedError": {
+        "description": "401. Unauthorized Error"
       },
-      "NotFound": {
-        "description": "404. Not Found"
+      "NotFoundError": {
+        "description": "404. Not Found Error"
       },
       "InternalServerError": {
         "description": "500. Internal Server Error"
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }
